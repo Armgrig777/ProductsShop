@@ -203,6 +203,7 @@
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(138, 23);
             comboBox1.TabIndex = 10;
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // AddShopBtn
             // 

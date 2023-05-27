@@ -17,16 +17,19 @@ namespace ProductsShop
         {
             UpdateListBox();
             UpdateCombo();
+            
         }
         private void UpdateCombo()
         {
             using (ProductsRepo repo = new ProductsRepo())
             {
                 var combo = repo.Shop.ToList();
-                comboBox1.DataSource = combo;
-                comboBox1.DisplayMember = "Name";
-                comboBox1.ValueMember = "Id";
-                //comboBox1.Items.Insert(-1, "");
+                comboBox1.Items.Add("Show All");
+                comboBox1.Items.AddRange(repo.Shop.ToArray());
+                //comboBox1.DataSource = combo;
+                //comboBox1.DisplayMember = "Name";
+                //comboBox1.ValueMember = "Id";
+                ////comboBox1.Items.Insert(-1, "");
             }
         }
 
@@ -105,9 +108,59 @@ namespace ProductsShop
             if (formShope.ShowDialog() == DialogResult.OK)
             {
                 MessageBox.Show("Shop Added");
+                
             }
             UpdateListBox();
+            
+        }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Shop shop = comboBox1.SelectedItem as Shop;
+            using (ProductsRepo db = new ProductsRepo())
+            {
+                if (shop == null)
+                {
+
+                    ProductListView.Items.Clear();
+                    var dbs = db.Products;
+                    foreach (var product in dbs)
+                    {
+                        ListViewItem item = new ListViewItem(new string[]
+                        {
+                        product.Id.ToString(),
+                        product.Name,
+                        product.Price.ToString(),
+                        product.Ammount.ToString(),
+                        product.ShopID.ToString(),
+                        });
+
+                        ProductListView.Items.Add(item);
+                    }
+
+                }
+
+
+            
+              else
+              {
+
+                var filteredshops = db.Products.Where(p => p.ShopID == shop.Id).ToList();
+                this.ProductListView.Items.Clear();
+                this.ProductListView.Items.AddRange(filteredshops.Select(p => new ListViewItem(new string[]
+                {
+                    p.Id.ToString(),
+                    p.Name,
+                    p.Price.ToString(),
+                    p.Ammount.ToString(),
+                    p.ShopID.ToString(),
+
+                })).ToArray());
+
+
+              }
+            }
+            
         }
     }
 }
