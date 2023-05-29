@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using ProductsShop.Data.Context;
 using ProductsShop.Data.Data;
 
 namespace ProductsShop
@@ -21,7 +23,26 @@ namespace ProductsShop
                         Console.WriteLine($"{product.Id} {product.Name} {product.Price} {product.Ammount}");
                     }
                 }
-            }
+
+                //Eager Loading
+                var shop = repo.Shop
+                    .Include(b => b.products.Where(p=>p.Id == 1))
+                    .ThenInclude(p=>p.Name)
+                    .ToList();
+                //Explicit Loading
+                var Shop = repo.Shop
+                    .Single(s=>s.Id == 1);
+
+                repo.Entry(Shop)
+                    .Collection(b => b.products)
+                   // .Query()
+                  //  .Where(p => p.Id == 1)
+                    .Load();
+
+                repo.Entry(Shop)
+                    .Reference(b => b.products)
+                    .Load();
+                
         }
     }
 }
