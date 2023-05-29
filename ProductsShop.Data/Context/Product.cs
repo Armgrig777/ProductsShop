@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ProductsShop.Data.Context
 {
@@ -20,7 +21,7 @@ namespace ProductsShop.Data.Context
 
         [ForeignKey("Shop")]
         public int? ShopID { get; set; }
-        public Shop? ShopName { get; set; }
+        public virtual Shop? ShopName { get; set; }
 
         
 

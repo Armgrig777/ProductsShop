@@ -1,3 +1,5 @@
+using ProductsShop.Data.Data;
+
 namespace ProductsShop
 {
     internal static class Program
@@ -8,10 +10,18 @@ namespace ProductsShop
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            using(ProductsRepo repo = new ProductsRepo())
+            {
+                var shops = repo.Shop;
+                foreach(var shop in shops)
+                {
+                    Console.WriteLine($"{shop.Name} {shop.Id}");
+                    foreach (var product in shop.products)
+                    {
+                        Console.WriteLine($"{product.Id} {product.Name} {product.Price} {product.Ammount}");
+                    }
+                }
+            }
         }
     }
 }

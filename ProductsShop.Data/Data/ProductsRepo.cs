@@ -14,10 +14,12 @@ namespace ProductsShop.Data.Data
         const string connection = "Server=.;Database=ProductShopDb;Trusted_Connection=True;TrustServerCertificate=True";
        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connection);
+            optionsBuilder.UseLazyLoadingProxies().UseSqlServer(connection);
             base.OnConfiguring(optionsBuilder);
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<Shop> Shop { get; set; }
+
+        
     }
 }
